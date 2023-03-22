@@ -7,28 +7,41 @@ import { useRouter } from 'next/router';
 
 export default function MainNav() {
   const [search, setSearch] = useState('');
+  const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter();
 
   function handleSubmit(e) {
     e.preventDefault();
+    setIsExpanded(false);
     router.push(`/artwork?title=true&q=${search}`);
   }
 
   return (
     <>
-      <Navbar bg="light" className="fixed-top" expand="lg">
+      <Navbar
+        bg="light"
+        className="fixed-top"
+        expand="lg"
+        expanded={isExpanded}
+      >
         <Container>
           <Navbar.Brand>Rahul Bajaj</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle
+            aria-controls="basic-navbar-nav"
+            onClick={() => setIsExpanded(!isExpanded)}
+          />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Link href="/" passHref legacyBehavior>
-                <Nav.Link>Home</Nav.Link>
+                <Nav.Link onClick={() => setIsExpanded(false)}>Home</Nav.Link>
               </Link>
               <Link href="/search" passHref legacyBehavior>
-                <Nav.Link>Advanced</Nav.Link>
+                <Nav.Link onClick={() => setIsExpanded(false)}>
+                  Advanced
+                </Nav.Link>
               </Link>
             </Nav>
+            &nbsp;
             <Form className="d-flex" onSubmit={handleSubmit}>
               <Form.Control
                 type="search"
@@ -43,6 +56,7 @@ export default function MainNav() {
                 Search
               </Button>
             </Form>
+            &nbsp;
           </Navbar.Collapse>
         </Container>
       </Navbar>

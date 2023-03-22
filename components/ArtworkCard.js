@@ -13,7 +13,7 @@ export default function ArtworkCard(props) {
   }
   if (data) {
     return (
-      <Card style={{ width: '18rem' }}>
+      <Card>
         <Card.Img
           variant="top"
           src={
