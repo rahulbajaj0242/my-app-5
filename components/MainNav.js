@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAtom } from 'jotai';
 import { searchHistoryAtom } from '../store';
+import { set } from 'react-hook-form';
 
 export default function MainNav() {
   const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
@@ -19,6 +20,7 @@ export default function MainNav() {
     setIsExpanded(false);
     let queryString = `title=true&q=${search}`;
     setSearchHistory((current) => [...current, queryString]);
+    setSearch('');
     router.push(`/artwork?title=true&q=${search}`);
   }
 
@@ -65,8 +67,15 @@ export default function MainNav() {
                 onChange={(e) => {
                   setSearch(e.target.value);
                 }}
+                value={search}
               />
-              <Button type="submit" variant="outline-success">
+              <Button
+                type="submit"
+                variant="outline-success"
+                onClick={() => {
+                  setIsExpanded(false);
+                }}
+              >
                 Search
               </Button>
             </Form>
