@@ -5,8 +5,11 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useAtom } from 'jotai';
+import { searchHistoryAtom } from '../store';
 
 export default function MainNav() {
+  const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
   const [search, setSearch] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter();
@@ -14,6 +17,8 @@ export default function MainNav() {
   function handleSubmit(e) {
     e.preventDefault();
     setIsExpanded(false);
+    let queryString = `title=true&q=${search}`;
+    setSearchHistory((current) => [...current, queryString]);
     router.push(`/artwork?title=true&q=${search}`);
   }
 
@@ -68,6 +73,16 @@ export default function MainNav() {
                     }}
                   >
                     Favourites
+                  </NavDropdown.Item>
+                </Link>
+                <Link href="/history" passHref legacyBehavior>
+                  <NavDropdown.Item
+                    href="/history"
+                    onClick={() => {
+                      setIsExpanded(false);
+                    }}
+                  >
+                    Search History
                   </NavDropdown.Item>
                 </Link>
               </NavDropdown>
